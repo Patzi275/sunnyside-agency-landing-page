@@ -1,0 +1,141 @@
+// The `_base.css` file holds what we might call the boilerplate code for the project.
+// In there, you might find some typographic rules, and probably the definition of some standard styles for commonly used HTML elements.
+
+
+// FUNCTIONS
+@function asset($base, $type, $path) {
+    @return url($base + $type + $path);
+}
+
+@function image($path, $base: $base-url) {
+    @return asset($base, 'images/', $path);
+}
+
+@function font($path, $base: $base-url) {
+    @return asset($base, 'fonts/', $path);
+}
+
+
+// MIXINS
+@mixin respond-to ($breakpoint) {
+    $raw-query: map-get($map: $breakpoints, $key: $breakpoint);
+
+    @if $raw-query {
+        @media (min-width: #{unquote($raw-query)}) {
+            @content;
+        }
+    }
+
+    @else {
+        @error 'No value found for `#{breakpoint}`. '+'Please make sure it is `$breakpoints` map.';
+    }
+}
+
+
+// VARIABLES
+// General
+$base-url: '../';
+$breakpoints: (
+    'small': '320px',
+    'medium': '768px',
+    'large': '1024px',
+    ) !default;
+
+// Primary colors 
+$soft-red: hsl(7, 99%, 70%);
+$yellow: hsl(51, 100%, 49%);
+$dark-desaturated-cyan: hsl(167, 40%, 24%); //(graphic design text)
+$dark-blue: hsl(198, 62%, 26%); //(photography text)
+$dark-moderate-cyan: hsl(168, 34%, 41%); //(footer)
+$light-moderate-cyan: hsl(167, 44%, 70%); //(footer)
+
+// Neutral colors
+$very-dark-desaturated-blue: hsl(212, 27%, 19%);
+$very-dark-grayish-blue: hsl(213, 9%, 39%);
+$dark-grayish-blue: hsl(232, 10%, 55%);
+$grayish-blue: hsl(210, 4%, 67%);
+$white: hsl(0, 0%, 100%);
+
+// Fonts stacks
+$text-font-stack: Barlow, arial;
+$title-font-stack: Fraunces, serif;
+
+
+// RESETS AND IMPORTS
+@font-face {
+    font-family: 'Barlow';
+    src: font("Barlow-SemiBold.ttf");
+    weight: 600;
+}
+
+@font-face {
+    font-family: 'Fraunces';
+    src: font("Fraunces_9pt-Bold.ttf");
+    weight: 700;
+}
+
+@font-face {
+    font-family: 'Fraunces';
+    src: font("Fraunces_9pt-Black.ttf");
+    weight: 900;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: inherit;
+}
+
+body {
+    font-size: 1.125rem; // 18px for 16px
+    font-family: 'Barlow';
+    color: $very-dark-grayish-blue;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+img,
+video {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+
+// HELPERS
+.image-full {
+    display: none;
+
+    @include respond-to('medium') {
+        display: block;
+    }
+}
+
+.image-mobile {
+    @include respond-to('medium') {
+        display: none;
+    }
+}
+
+.d-none {
+    display: none !important;
+}
